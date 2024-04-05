@@ -108,7 +108,7 @@ export default function GlobeComponent({ currentCoords, onClick, selectedCoords 
     if (map.current) return;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/dark-v12',
+      style: 'mapbox://styles/mapbox/streets-v12',
       center: [-94.68833333, 32.72333333],
       zoom: 2,
       antialias: true
