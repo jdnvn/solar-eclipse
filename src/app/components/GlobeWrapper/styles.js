@@ -7,13 +7,10 @@ export const PanelContainer = styled.div`
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  padding: 2em;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  font-family: Arial, sans-serif;
   z-index: 1;
 
   @media (min-width: 1000px) {
@@ -26,6 +23,16 @@ export const PanelContainer = styled.div`
   }
 `;
 
+export const PanelContent = styled.div`
+  margin-top: 50px;
+  width: 100%;
+  padding: 2em;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  overflow: auto;
+  box-sizing: border-box;
+`;
+
 export const CloseButton = styled.button`
   position: absolute;
   top: 10px;
@@ -36,6 +43,4 @@ export const CloseButton = styled.button`
   cursor: pointer;
 `;
 
-export const PanelContent = styled.div`
-  text-align: center;
-`;
+

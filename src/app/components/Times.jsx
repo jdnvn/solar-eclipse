@@ -21,7 +21,7 @@ export default function Times({ data }) {
       <br/>
       {data.local_data.map((timeData) => {
         return (
-          <p key={timeData.time}>{timeData.phenomenon} at {new Date(`2024-04-08T${timeData.time}Z`).toLocaleTimeString()}</p>
+          <p style={{ marginBottom: '10px' }} key={timeData.time}>{timeData.phenomenon} at<br />{new Date(`2024-04-08T${timeData.time}Z`).toLocaleTimeString()}</p>
         );
       })}
     </>
