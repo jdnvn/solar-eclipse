@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import SunObscuration from '../SunObscuration';
 import Times from '../Times';
 import { CloseButton, PanelContainer, PanelContent } from './styles';
+import Citations from '../Citations/Citations';
 
 const ECLIPSE_DATA_PATH = '/api/eclipse_data';
 
@@ -26,7 +27,7 @@ export default function GlobeWrapper() {
     }
   };
 
-  const fetchLocation = async (latitude, longitude) => {
+  const fetchLocationData = async (latitude, longitude) => {
     try {
       const response = await fetch(`/api/location?latitude=${latitude}&longitude=${longitude}`);
       const data = await response.json();
@@ -40,7 +41,7 @@ export default function GlobeWrapper() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         setCurrentCoords(position.coords);
-        fetchLocation(position.coords.latitude, position.coords.longitude);
+        fetchLocationData(position.coords.latitude, position.coords.longitude);
         fetchEclipseData(position.coords.latitude, position.coords.longitude);
       }, (error) => {
         if (error.code === error.PERMISSION_DENIED) {
@@ -55,7 +56,7 @@ export default function GlobeWrapper() {
     const longitude = event.lngLat.lng;
     const latitude = event.lngLat.lat;
     setSelectedCoords({ latitude, longitude });
-    fetchLocation(latitude, longitude);
+    fetchLocationData(latitude, longitude);
     fetchEclipseData(latitude, longitude);
   };
 
@@ -87,9 +88,9 @@ export default function GlobeWrapper() {
       {showPanel ? (
         <PanelContainer>
           <PanelContent>
-            <CloseButton>X</CloseButton>
-            <h1 style={{ textAlign: 'center' }}>Total Solar Eclipse</h1>
-            <h3 style={{ margin: '0 0 1em 0', textAlign: 'center' }}>April 8, 2024</h3>
+            <CloseButton onClick={closePanel}>X</CloseButton>
+            <h2 style={{ textAlign: 'center' }}>Total Solar Eclipse</h2>
+            <h4 style={{ margin: '5px 0 1em 0', textAlign: 'center' }}>April 8, 2024</h4>
             {currentLocation && eclipseData ? (
               <>
                 <p style={{ margin: 0, textAlign: 'center' }}>
@@ -101,6 +102,7 @@ export default function GlobeWrapper() {
                 {selectedCoords && <button onClick={getDirections}>Get Directions</button>}
                 {eclipseData.properties && <SunObscuration data={eclipseData.properties} />}
                 {eclipseData.properties && <Times data={eclipseData.properties} />}
+                <Citations />
               </>
             ) : (
               <>
