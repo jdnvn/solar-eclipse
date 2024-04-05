@@ -6,6 +6,7 @@ import SunObscuration from '../SunObscuration';
 import Times from '../Times';
 import { CloseButton, PanelContainer, PanelContent } from './styles';
 import Citations from '../Citations/Citations';
+import EclipseLoader from '../EclipseLoader';
 
 const ECLIPSE_DATA_PATH = '/api/eclipse_data';
 
@@ -106,7 +107,7 @@ export default function GlobeWrapper() {
               </>
             ) : (
               <>
-                {locationPermissionDenied ? <p style={{ margin: 0, textAlign: 'center' }}>Select a point on the map to see eclipse data!</p> : <p style={{ margin: 0, textAlign: 'center' }}>Loading...</p>}
+                  {locationPermissionDenied ? <p style={{ margin: 0, textAlign: 'center' }}>Select a point on the map to see eclipse data!</p> : <EclipseLoader />}
               </>
             )}
           </PanelContent>
