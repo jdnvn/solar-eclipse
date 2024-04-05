@@ -73,6 +73,7 @@ export default function GlobeComponent({ currentCoords, onClick, selectedCoords 
       center: [e.lngLat.lng, e.lngLat.lat],
       speed: 0.5
     });
+
     if (map.current.getSource('current_point')) {
       map.current.removeLayer('current_point');
       map.current.removeSource('current_point');
@@ -88,7 +89,7 @@ export default function GlobeComponent({ currentCoords, onClick, selectedCoords 
         },
       }
     });
-    // Add a circle layer
+
     map.current.addLayer({
       'id': 'current_point',
       'type': 'circle',
@@ -107,7 +108,7 @@ export default function GlobeComponent({ currentCoords, onClick, selectedCoords 
     if (map.current) return;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v12',
+      style: 'mapbox://styles/mapbox/dark-v12',
       center: [-94.68833333, 32.72333333],
       zoom: 2,
       antialias: true
@@ -116,19 +117,16 @@ export default function GlobeComponent({ currentCoords, onClick, selectedCoords 
     map.current.on('load', onGlobeLoad);
   }, []);
 
+  // TODO: change this to mapbox GL's built in geolocation
   useEffect(() => {
     if (map.current && currentCoords?.latitude && currentCoords?.longitude) {
       const size = 100;
 
-      // This implements `StyleImageInterface`
-      // to draw a pulsing dot icon on the map.
       const pulsingDot = {
         width: size,
         height: size,
         data: new Uint8Array(size * size * 4),
 
-        // When the layer is added to the map,
-        // get the rendering context for the map canvas.
         onAdd: function () {
           const canvas = document.createElement('canvas');
           canvas.width = this.width;
@@ -136,7 +134,6 @@ export default function GlobeComponent({ currentCoords, onClick, selectedCoords 
           this.context = canvas.getContext('2d');
         },
 
-        // Call once before every frame where the icon will be used.
         render: function () {
           const duration = 1000;
           const t = (performance.now() % duration) / duration;
@@ -145,7 +142,6 @@ export default function GlobeComponent({ currentCoords, onClick, selectedCoords 
           const outerRadius = (size / 2) * 0.7 * t + radius;
           const context = this.context;
 
-          // Draw the outer circle.
           context.clearRect(0, 0, this.width, this.height);
           context.beginPath();
           context.arc(
@@ -158,7 +154,6 @@ export default function GlobeComponent({ currentCoords, onClick, selectedCoords 
           context.fillStyle = `rgba(255, 260, 342, ${1 - t})`;
           context.fill();
 
-          // Draw the inner circle.
           context.beginPath();
           context.arc(
             this.width / 2,
@@ -173,7 +168,6 @@ export default function GlobeComponent({ currentCoords, onClick, selectedCoords 
           context.fill();
           context.stroke();
 
-          // Update this image's data with data from the canvas.
           this.data = context.getImageData(
             0,
             0,
@@ -181,16 +175,12 @@ export default function GlobeComponent({ currentCoords, onClick, selectedCoords 
             this.height
           ).data;
 
-          // Continuously repaint the map, resulting
-          // in the smooth animation of the dot.
           map.current.triggerRepaint();
 
-          // Return `true` to let the map know that the image was updated.
           return true;
         }
       };
       map.current.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
-      // add user location marker
       map.current.addSource('point', {
         'type': 'geojson',
         'data': {

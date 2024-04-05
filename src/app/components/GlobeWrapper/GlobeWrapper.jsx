@@ -6,7 +6,7 @@ import SunObscuration from '../SunObscuration';
 import Times from '../Times';
 import { CloseButton, PanelContainer, PanelContent } from './styles';
 import Citations from '../Citations/Citations';
-import EclipseLoader from '../EclipseLoader';
+import EclipseLoader from '../EclipseLoader/EclipseLoader';
 
 const ECLIPSE_DATA_PATH = '/api/eclipse_data';
 

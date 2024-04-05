@@ -1,12 +1,11 @@
-import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from "styled-components";
 
 const eclipse = keyframes`
   0% { left: -100px; }
   100% { left: 100px; }
 `;
 
-const Loader = styled.div`
+export const Loader = styled.div`
   position: relative;
   width: 100px;
   height: 100px;
@@ -26,18 +25,10 @@ const Loader = styled.div`
   }
 `;
 
-const Container = styled.div`
+export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 50vh;
   overflow: hidden;
 `;
-
-const EclipseLoader = () => (
-  <Container>
-    <Loader />
-  </Container>
-);
-
-export default EclipseLoader;

@@ -5,4 +5,5 @@ export const CitationContainer = styled.div`
   border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.1);
   margin-top: 30px;
+  padding: 1em;
 `;
