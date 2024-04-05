@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export default async function handler(req, res) {
-  console.log(`REQUEST RECEIVED: ${req}`)
   const { latitude, longitude } = req.query;
 
   try {

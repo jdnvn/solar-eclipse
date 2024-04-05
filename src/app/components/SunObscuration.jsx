@@ -1,4 +1,4 @@
-export default function SunEclipseChart({ data }) {
+export default function SunObscuration({ data }) {
   const sunRadius = 100;
   const moonRadius = sunRadius; // The moon and sun appear approximately the same size
 
