@@ -26,7 +26,7 @@ export const PanelContainer = styled.div`
 export const PanelContent = styled.div`
   margin-top: 50px;
   width: 100%;
-  padding: 2em;
+  padding: 0 2em 2em 2em;
   font-family: Arial, sans-serif;
   text-align: center;
   overflow: auto;

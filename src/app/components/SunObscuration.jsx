@@ -14,7 +14,7 @@ export default function SunObscuration({ data }) {
             <circle cx="150" cy="150" r={sunRadius} />
           </clipPath>
         </defs>
-        <circle cx="150" cy="150" r={sunRadius} fill="yellow" />
+        <circle cx="150" cy="150" r={sunRadius} fill="white" />
         <circle cx={moonX} cy="150" r={moonRadius} fill="black" clipPath="url(#sunClip)" />
       </svg>
     </div>
