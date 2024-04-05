@@ -22,7 +22,7 @@ const Loader = styled.div`
     background: #000;
     border-radius: 50%;
     left: -100px;
-    animation: ${eclipse} 2s linear infinite;
+    animation: ${eclipse} 4s linear infinite;
   }
 `;
 
