@@ -31,6 +31,7 @@ export const PanelContent = styled.div`
   text-align: center;
   overflow: auto;
   box-sizing: border-box;
+  color: white;
 `;
 
 export const CloseButton = styled.button`
