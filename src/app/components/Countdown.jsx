@@ -19,7 +19,7 @@ export default function Countdown({ timeToEclipse }) {
     let minutes = parseInt(total_minutes % 60);
     let hours = parseInt(total_hours % 24);
 
-    return `${days > 0 ? `${days} days ` : ''}${hours > 0 ? `${hours} hours ` : ''}${minutes > 0 ? `${minutes} minutes and ` : ''}${seconds} seconds until eclipse!`
+    return `${days > 0 ? `${days} days ` : ''}${hours > 0 ? `${hours} hours ` : ''}${minutes > 0 ? `${minutes} minutes and ` : ''}${seconds} seconds until eclipse begins!`
   };
 
   return (

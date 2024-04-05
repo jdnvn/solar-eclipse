@@ -1,23 +1,22 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react';
-import { NORTHERN_LIMIT_COORDS, SOUTHERN_LIMIT_COORDS } from '../constants';
+import { NORTHERN_LIMIT_COORDS, SOUTHERN_LIMIT_COORDS, CENTRAL_LINE_COORDS } from '../constants';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
-export default function GlobeComponent({ currentCoords, onGlobeClick }) {
+export default function GlobeComponent({ currentCoords, onClick, selectedCoords }) {
   const mapContainer = useRef(null);
   const map = useRef(null);
 
-  const addPath = (id, coords) => {
+  const addPolygon = (id, coords) => {
     map.current.addSource(id, {
       'type': 'geojson',
       'data': {
           'type': 'Feature',
-          'properties': {},
           'geometry': {
-              'type': 'LineString',
+              'type': 'Polygon',
               'coordinates': coords
           }
       }
@@ -25,22 +24,83 @@ export default function GlobeComponent({ currentCoords, onGlobeClick }) {
 
     map.current.addLayer({
       'id': id,
-      'type': 'line',
+      'type': 'fill',
       'source': id,
-      'layout': {
-          'line-join': 'round',
-          'line-cap': 'round'
-      },
+      'layout': {},
       'paint': {
-          'line-color': '#888',
-          'line-width': 1
+        'fill-color': '#000000',
+        'fill-opacity': 0.2
       }
-  });
-  };
+    });
+  }
 
   const onGlobeLoad = () => {
-    addPath('northern_limit', NORTHERN_LIMIT_COORDS);
-    addPath('southern_limit', SOUTHERN_LIMIT_COORDS);
+    addPolygon('zone_of_totality', [[...NORTHERN_LIMIT_COORDS, ...SOUTHERN_LIMIT_COORDS.reverse()]]);
+    map.current.addSource('moon', {
+      'type': 'geojson',
+      'data': {
+        'type': 'Feature',
+        'geometry': {
+          'type': 'Point',
+          'coordinates': CENTRAL_LINE_COORDS[0]
+        }
+      }
+    });
+    map.current.addLayer({
+      'id': 'moon',
+      'source': 'moon',
+      'type': 'circle',
+      'paint': {
+        'circle-color': '#000000',
+        'circle-radius': 8,
+      }
+    })
+    let counter = 0;
+    setInterval(() => {
+      map.current.getSource('moon').setData({
+        'type': 'Feature',
+        'geometry': {
+          'type': 'Point',
+          'coordinates': CENTRAL_LINE_COORDS[counter]
+        }
+      });
+      counter = (counter + 1) % CENTRAL_LINE_COORDS.length;
+    }, 1000);
+  };
+
+  const onGlobeClick = (e) => {
+    map.current.flyTo({
+      center: [e.lngLat.lng, e.lngLat.lat],
+      speed: 0.5
+    });
+    if (map.current.getSource('current_point')) {
+      map.current.removeLayer('current_point');
+      map.current.removeSource('current_point');
+    }
+
+    map.current.addSource('current_point', {
+      'type': 'geojson',
+      'data': {
+        'type': 'Feature',
+        'geometry': {
+          'type': 'Point',
+          'coordinates': [e.lngLat.lng, e.lngLat.lat]
+        },
+      }
+    });
+    // Add a circle layer
+    map.current.addLayer({
+      'id': 'current_point',
+      'type': 'circle',
+      'source': 'current_point',
+      'paint': {
+        'circle-color': '#4264fb',
+        'circle-radius': 5,
+        'circle-stroke-width': 2,
+        'circle-stroke-color': '#ffffff'
+      }
+    });
+    onClick(e);
   };
 
   useEffect(() => {
