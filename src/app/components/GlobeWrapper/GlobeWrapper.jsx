@@ -4,7 +4,7 @@ import GlobeComponent from '../GlobeComponent';
 import { useEffect, useState } from "react";
 import SunObscuration from '../SunObscuration';
 import Times from '../Times';
-import { PanelContainer } from './styles';
+import { CloseButton, PanelContainer, PanelContent } from './styles';
 
 const ECLIPSE_DATA_PATH = '/api/eclipse_data';
 
@@ -86,26 +86,28 @@ export default function GlobeWrapper() {
       </div>
       {showPanel ? (
         <PanelContainer>
-          <button style={{ position: 'absolute', top: '10px', right: '10px', background: 'transparent', border: 'none', fontSize: '20px', cursor: 'pointer' }} onClick={closePanel}>X</button>
-          <h1 style={{ textAlign: 'center' }}>Total Solar Eclipse</h1>
-          <h3 style={{ margin: '0 0 1em 0', textAlign: 'center' }}>April 8, 2024</h3>
-          {currentLocation && eclipseData ? (
-            <>
-              <p style={{ margin: 0, textAlign: 'center' }}>
-                {`In ${formatAddress(currentLocation.address)}`}
-              </p>
-              <p style={{ margin: '0 0 1em 0', textAlign: 'center' }}>
-                the sun will be obscured by <b>{eclipseData.properties?.obscuration}</b>
-              </p>
-              {selectedCoords && <button onClick={getDirections}>Get Directions</button>}
-              {eclipseData.properties && <SunObscuration data={eclipseData.properties} />}
-              {eclipseData.properties && <Times data={eclipseData.properties} />}
-            </>
-          ) : (
-            <>
-              {locationPermissionDenied ? <p style={{ margin: 0, textAlign: 'center' }}>Select a point on the map to see eclipse data!</p> : <p style={{ margin: 0, textAlign: 'center' }}>Loading...</p>}
-            </>
-          )}
+          <PanelContent>
+            <CloseButton>X</CloseButton>
+            <h1 style={{ textAlign: 'center' }}>Total Solar Eclipse</h1>
+            <h3 style={{ margin: '0 0 1em 0', textAlign: 'center' }}>April 8, 2024</h3>
+            {currentLocation && eclipseData ? (
+              <>
+                <p style={{ margin: 0, textAlign: 'center' }}>
+                  {`In ${formatAddress(currentLocation.address)}`}
+                </p>
+                <p style={{ margin: '0 0 1em 0', textAlign: 'center' }}>
+                  the sun will be obscured by <b>{eclipseData.properties?.obscuration}</b>
+                </p>
+                {selectedCoords && <button onClick={getDirections}>Get Directions</button>}
+                {eclipseData.properties && <SunObscuration data={eclipseData.properties} />}
+                {eclipseData.properties && <Times data={eclipseData.properties} />}
+              </>
+            ) : (
+              <>
+                {locationPermissionDenied ? <p style={{ margin: 0, textAlign: 'center' }}>Select a point on the map to see eclipse data!</p> : <p style={{ margin: 0, textAlign: 'center' }}>Loading...</p>}
+              </>
+            )}
+          </PanelContent>
         </PanelContainer>
       ) : <button style={{ position: 'fixed', top: '20px', right: '20px' }} onClick={openPanel}>Show Info</button>}
     </div>

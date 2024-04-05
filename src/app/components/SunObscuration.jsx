@@ -7,14 +7,16 @@ export default function SunObscuration({ data }) {
   const moonX = 150 + (sunRadius * (1 - (obscuration / 100)));
 
   return (
-    <svg width="300" height="300">
-      <defs>
-        <clipPath id="sunClip">
-          <circle cx="150" cy="150" r={sunRadius} />
-        </clipPath>
-      </defs>
-      <circle cx="150" cy="150" r={sunRadius} fill="yellow" />
-      <circle cx={moonX} cy="150" r={moonRadius} fill="black" clipPath="url(#sunClip)" />
-    </svg>
+    <div>
+      <svg viewBox="0 0 300 300" width="100%" height="100%">
+        <defs>
+          <clipPath id="sunClip">
+            <circle cx="150" cy="150" r={sunRadius} />
+          </clipPath>
+        </defs>
+        <circle cx="150" cy="150" r={sunRadius} fill="yellow" />
+        <circle cx={moonX} cy="150" r={moonRadius} fill="black" clipPath="url(#sunClip)" />
+      </svg>
+    </div>
   );
 }
