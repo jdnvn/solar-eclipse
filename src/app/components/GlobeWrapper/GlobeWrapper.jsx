@@ -142,7 +142,7 @@ export default function GlobeWrapper() {
       <div style={{ width: '100vw', height: '100vh' }}>
         <GlobeComponent currentCoords={currentCoords} selectedCoords={selectedCoords} onClick={onGlobeClick} />
       </div>
-      {widowWidth && windowWidth > 1000 ? (
+      {windowWidth && windowWidth > 1000 ? (
         <SidePanel>
           {dataContent()}
         </SidePanel>
