@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { NORTHERN_LIMIT_COORDS, SOUTHERN_LIMIT_COORDS, CENTRAL_LINE_COORDS } from '../constants';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 
@@ -46,6 +46,7 @@ export default function GlobeComponent({ currentCoords, onClick, selectedCoords 
         }
       }
     });
+
     map.current.addLayer({
       'id': 'moon',
       'source': 'moon',
@@ -54,7 +55,7 @@ export default function GlobeComponent({ currentCoords, onClick, selectedCoords 
         'circle-color': '#000000',
         'circle-radius': 8,
       }
-    })
+    });
     let counter = 0;
     setInterval(() => {
       map.current.getSource('moon').setData({
@@ -117,95 +118,120 @@ export default function GlobeComponent({ currentCoords, onClick, selectedCoords 
     map.current.on('load', onGlobeLoad);
   }, []);
 
-  // TODO: change this to mapbox GL's built in geolocation
+  const addUserLocationMarker = () => {
+    const size = 100;
+
+    const pulsingDot = {
+      width: size,
+      height: size,
+      data: new Uint8Array(size * size * 4),
+
+      onAdd: function () {
+        const canvas = document.createElement('canvas');
+        canvas.width = this.width;
+        canvas.height = this.height;
+        this.context = canvas.getContext('2d');
+      },
+
+      render: function () {
+        const duration = 1000;
+        const t = (performance.now() % duration) / duration;
+
+        const radius = (size / 2) * 0.3;
+        const outerRadius = (size / 2) * 0.7 * t + radius;
+        const context = this.context;
+
+        context.clearRect(0, 0, this.width, this.height);
+        context.beginPath();
+        context.arc(
+          this.width / 2,
+          this.height / 2,
+          outerRadius,
+          0,
+          Math.PI * 2
+        );
+        context.fillStyle = `rgba(255, 260, 342, ${1 - t})`;
+        context.fill();
+
+        context.beginPath();
+        context.arc(
+          this.width / 2,
+          this.height / 2,
+          radius,
+          0,
+          Math.PI * 2
+        );
+        context.fillStyle = 'rgba(29, 160, 242, 1)';
+        context.strokeStyle = 'white';
+        context.lineWidth = 2 + 4 * (1 - t);
+        context.fill();
+        context.stroke();
+
+        this.data = context.getImageData(
+          0,
+          0,
+          this.width,
+          this.height
+        ).data;
+
+        map.current.triggerRepaint();
+
+        return true;
+      }
+    };
+    map.current.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
+    map.current.addSource('point', {
+      'type': 'geojson',
+      'data': {
+        'type': 'FeatureCollection',
+        'features': [
+          {
+            'type': 'Feature',
+            'geometry': {
+              'type': 'Point',
+              'coordinates': [currentCoords.longitude, currentCoords.latitude]
+            }
+          }
+        ]
+      }
+    });
+    map.current.addLayer({
+      'id': 'point',
+      'type': 'symbol',
+      'source': 'point',
+      'layout': {
+        'icon-image': 'pulsing-dot'
+      }
+    });
+  };
+
   useEffect(() => {
     if (map.current && currentCoords?.latitude && currentCoords?.longitude) {
-      const size = 100;
-
-      const pulsingDot = {
-        width: size,
-        height: size,
-        data: new Uint8Array(size * size * 4),
-
-        onAdd: function () {
-          const canvas = document.createElement('canvas');
-          canvas.width = this.width;
-          canvas.height = this.height;
-          this.context = canvas.getContext('2d');
-        },
-
-        render: function () {
-          const duration = 1000;
-          const t = (performance.now() % duration) / duration;
-
-          const radius = (size / 2) * 0.3;
-          const outerRadius = (size / 2) * 0.7 * t + radius;
-          const context = this.context;
-
-          context.clearRect(0, 0, this.width, this.height);
-          context.beginPath();
-          context.arc(
-            this.width / 2,
-            this.height / 2,
-            outerRadius,
-            0,
-            Math.PI * 2
-          );
-          context.fillStyle = `rgba(255, 260, 342, ${1 - t})`;
-          context.fill();
-
-          context.beginPath();
-          context.arc(
-            this.width / 2,
-            this.height / 2,
-            radius,
-            0,
-            Math.PI * 2
-          );
-          context.fillStyle = 'rgba(29, 160, 242, 1)';
-          context.strokeStyle = 'white';
-          context.lineWidth = 2 + 4 * (1 - t);
-          context.fill();
-          context.stroke();
-
-          this.data = context.getImageData(
-            0,
-            0,
-            this.width,
-            this.height
-          ).data;
-
-          map.current.triggerRepaint();
-
-          return true;
+      const waiting = () => {
+        if (!map.current.isStyleLoaded()) {
+          setTimeout(waiting, 200);
+        } else {
+          addUserLocationMarker();
         }
       };
-      map.current.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
-      map.current.addSource('point', {
-        'type': 'geojson',
-        'data': {
-          'type': 'FeatureCollection',
-          'features': [
-            {
-              'type': 'Feature',
-              'geometry': {
-                'type': 'Point',
-                'coordinates': [currentCoords.longitude, currentCoords.latitude]
-              }
-            }
-          ]
-        }
-      });
-      map.current.addLayer({
-        'id': 'point',
-        'type': 'symbol',
-        'source': 'point',
-        'layout': {
-          'icon-image': 'pulsing-dot'
-        }
-      });
+      waiting();
     }
   }, [currentCoords]);
 
-  return <div ref={mapContainer} style={{ width: "100vw", height: "100vh" }} />;
+  useEffect(() => {
+    if (selectedCoords === null && map?.current?.getSource('current_point')) {
+      map.current.removeLayer('current_point');
+      map.current.removeSource('current_point');
+      if (currentCoords) {
+        map.current.flyTo({
+          center: [currentCoords.longitude, currentCoords.latitude],
+          speed: 0.5
+        });
+      }
+    }
+  }, [selectedCoords]);
+
+  return (
+    <div ref={mapContainer} style={{ width: "100vw", height: "100vh" }} />
+  );
 }
