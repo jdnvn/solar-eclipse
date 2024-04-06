@@ -4,7 +4,7 @@ export default function SunObscuration({ data }) {
 
   // Calculate the moon's x position based on the obscuration percentage
   const obscuration = parseFloat(data.obscuration.replace('%', ''));
-  const moonX = 150 + (sunRadius * (1 - (obscuration / 100)));
+  const moonX = 150 + (sunRadius * 2 * (1 - (obscuration / 100)));
 
   return (
     <div>

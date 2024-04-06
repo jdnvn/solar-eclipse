@@ -62,7 +62,7 @@ export const FunFactContainer = styled.div`
   font-size: 12px;
   color: white;
   border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.25);
   margin-top: 10px;
   padding: 1em;
 `;
