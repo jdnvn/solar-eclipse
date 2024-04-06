@@ -1,5 +1,6 @@
-import { Inter, Saira } from "next/font/google";
+import { Saira } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react"
 
 const inter = Saira({ subsets: ["latin"], weight: '400',  });
 
@@ -16,6 +17,7 @@ export default function RootLayout({
       <body>{children}</body>
       <meta content="#2E4C6B" name="theme-color" />
       <meta property="og:image" content="https://raw.githubusercontent.com/jdnvn/solar-eclipse-map/main/public/preview.png" />
+      <Analytics />
     </html>
   );
 }
