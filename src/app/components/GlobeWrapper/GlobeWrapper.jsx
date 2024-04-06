@@ -7,11 +7,10 @@ import Times from '../Times';
 import Citations from '../Citations/Citations';
 import EclipseLoader from '../EclipseLoader/EclipseLoader';
 import SidePanel from '../SidePanel/SidePanel';
-import { TitleInfo, BackToCurrentLocationButton, ClickMapTip, GetDirectionsButton, HeaderBar, SelectedLocation, FunFactContainer } from './styles';
+import { BackToCurrentLocationButton, ClickMapTip, GetDirectionsButton, HeaderBar, SelectedLocation, FunFactContainer } from './styles';
 import Drawer from '../Drawer/Drawer';
 import { IoMdLocate } from "react-icons/io";
 import { FaDirections } from "react-icons/fa";
-import { AI_FACTS } from '../../constants';
 
 const ECLIPSE_DATA_PATH = '/api/eclipse_data';
 
@@ -132,7 +131,7 @@ export default function GlobeWrapper({ randomFacts }) {
               {randomFacts.map((fact, index) => {
                 return <FunFactContainer key={index}><p style={{ textAlign: "left", fontSize: "12px" }}>{fact}</p></FunFactContainer>;
               })}
-              <p style={{ color: "#3b3b3b", opacity: "40%", marginTop: "10px" }}>____</p>
+              <p style={{ color: "#bababa", opacity: "40%", marginTop: "10px" }}>____</p>
               <Citations />
             </>
           ) : (

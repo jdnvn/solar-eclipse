@@ -15,6 +15,7 @@ export default function RootLayout({
     <html lang="en" className={inter.className}>
       <body>{children}</body>
       <meta content="#2E4C6B" name="theme-color" />
+      <meta property="og:image" content="https://raw.githubusercontent.com/jdnvn/solar-eclipse-map/main/public/preview.png" />
     </html>
   );
 }
