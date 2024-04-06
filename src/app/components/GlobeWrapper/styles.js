@@ -40,10 +40,14 @@ export const HeaderBar = styled.div`
 
 export const SearchBarContainer = styled.div`
   position: relative;
-  width: 30%;
+  width: 500px;
   border: none;
   border-radius: 20px;
   background-color: rgba(0, 0, 0, 0.5);
+
+  @media (max-width: 1000px) {
+    width: 90%;
+  }
 `;
 
 export const SearchBar = styled.input`
@@ -58,7 +62,8 @@ export const SearchBar = styled.input`
   touch-action: manipulation;
 
   &::placeholder {
-    color: #bababa
+    color: #bababa;
+    text-align: center;
   }
 `;
 
