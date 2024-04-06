@@ -55,6 +55,8 @@ export const SearchBar = styled.input`
   outline: none;
   background-color: transparent;
   border: none;
+  touch-action: manipulation;
+
   &::placeholder {
     color: #bababa
   }
