@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
-export const ShowInfoPanelButton = styled.button`
+export const TitleInfo = styled.div`
   position: fixed;
   top: 20px;
-  right: 20px;
+  left: 20px;
+  text-shadow: 2px 1px 2px rgb(0 0 0 / 100%);
 `;
 
 export const BackToCurrentLocationButton = styled.button`
@@ -53,6 +54,15 @@ export const GetDirectionsButton = styled(BackToCurrentLocationButton)`
 
 export const ClickMapTip = styled.div`
   font-size: 15px;
-  text-shadow: black 1px 0 5px;
+  text-shadow: 2px 1px 2px rgb(0 0 0 / 100%);
   text-align: center;
+`;
+
+export const FunFactContainer = styled.div`
+  font-size: 12px;
+  color: white;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+  padding: 1em;
 `;

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Countdown from './Countdown';
+import Time from "./Time/Time";
 
 export default function Times({ data }) {
   const [timeToEclipseInMs, setTimeToEclipseInMs] = useState(null);
@@ -17,11 +18,11 @@ export default function Times({ data }) {
 
   return (
     <>
-      {timeToEclipseInMs && <Countdown timeToEclipse={timeToEclipseInMs}/>}
-      <br/>
+      {data.duration_of_totality && <Time key="duration_of_totality" time={data.duration_of_totality} title="Duration of Totality" />}
       {data.local_data.map((timeData) => {
+        let localTime = new Date(`2024-04-08T${timeData.time}Z`).toLocaleTimeString();
         return (
-          <p style={{ marginBottom: '10px' }} key={timeData.time}>{timeData.phenomenon} at<br />{new Date(`2024-04-08T${timeData.time}Z`).toLocaleTimeString()}</p>
+          <Time key={timeData.time} time={localTime} title={timeData.phenomenon}  />
         );
       })}
     </>

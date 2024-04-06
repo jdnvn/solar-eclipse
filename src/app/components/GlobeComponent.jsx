@@ -134,11 +134,11 @@ export default function GlobeComponent({ currentCoords, onClick, selectedCoords 
       },
 
       render: function () {
-        const duration = 1000;
+        const duration = 2000;
         const t = (performance.now() % duration) / duration;
 
         const radius = (size / 2) * 0.3;
-        const outerRadius = (size / 2) * 0.7 * t + radius;
+        const outerRadius = (size / 2) * 0.5 * t + radius;
         const context = this.context;
 
         context.clearRect(0, 0, this.width, this.height);
