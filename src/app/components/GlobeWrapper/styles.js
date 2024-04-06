@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { FaSearch, FaTimes } from "react-icons/fa";
 
 export const TitleInfo = styled.div`
   position: fixed;
@@ -35,6 +36,48 @@ export const HeaderBar = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+`;
+
+export const SearchBarContainer = styled.div`
+  position: relative;
+  width: 300px;
+  border: none;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+`;
+
+export const SearchBar = styled.input`
+  padding: 10px 40px 10px 20px;
+  margin-left: 10px;
+  width: 100%;
+  color: #fff;
+  font-size: 12px;
+  outline: none;
+  background-color: transparent;
+  border: none;
+  &::placeholder {
+    color: #bababa
+  }
+`;
+
+export const SearchIcon = styled(FaSearch)`
+  position: absolute;
+  top: 50%;
+  left: 10px; /* Adjusted left position */
+  transform: translateY(-50%);
+  color: #fff;
+  cursor: pointer;
+  z-index: 2; /* Ensure the icon is above the input */
+`;
+
+export const ClearButton = styled(FaTimes)`
+  position: absolute;
+  top: 50%;
+  right: 10px; /* Adjusted right position */
+  transform: translateY(-50%);
+  color: #fff;
+  cursor: pointer;
+  z-index: 2; /* Ensure the button is above the input */
 `;
 
 export const SelectedLocation = styled.div`
