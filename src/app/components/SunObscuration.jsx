@@ -8,7 +8,7 @@ export default function SunObscuration({ data }) {
 
   return (
     <div>
-      <svg viewBox="0 0 300 300" width="100%" height="100%">
+      <svg viewBox="0 0 300 300">
         <defs>
           <clipPath id="sunClip">
             <circle cx="150" cy="150" r={sunRadius} />

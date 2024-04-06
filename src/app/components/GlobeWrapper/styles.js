@@ -1,47 +1,58 @@
 import styled from 'styled-components';
 
-export const PanelContainer = styled.div`
+export const ShowInfoPanelButton = styled.button`
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 1;
+  top: 20px;
+  right: 20px;
+`;
+
+export const BackToCurrentLocationButton = styled.button`
+  width: 50px;
+  height: 50px;
+  border-radius: 100px;
+  position: fixed;
+  bottom: 70px;
+  left: 20px;
+  background-color: rgba(0, 0, 0, 0.5);;
+  border: none;
+  font-size: 20px;
+  color: white;
 
   @media (min-width: 1000px) {
-    top: 20px;
-    right: 20px;
     bottom: 20px;
-    left: auto;
-    width: 20%;
-    border-radius: 10px;
   }
 `;
 
-export const PanelContent = styled.div`
-  margin-top: 50px;
-  width: 100%;
-  padding: 0 2em 2em 2em;
-  font-family: Arial, sans-serif;
+export const HeaderBar = styled.div`
+  position: fixed;
+  top: 20px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  font-size: 15px;
   text-align: center;
-  overflow: auto;
-  box-sizing: border-box;
-  color: white;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 `;
 
-export const CloseButton = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
+export const SelectedLocation = styled.div`
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+  padding: 10px;
 `;
 
+export const GetDirectionsButton = styled(BackToCurrentLocationButton)`
+  bottom: 130px;
 
+  @media (min-width: 1000px) {
+    bottom: 80px;
+  }
+`;
+
+export const ClickMapTip = styled.div`
+  font-size: 15px;
+  text-shadow: black 1px 0 5px;
+  text-align: center;
+`;
