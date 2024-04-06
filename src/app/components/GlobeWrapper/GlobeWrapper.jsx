@@ -27,6 +27,7 @@ export default function GlobeWrapper() {
 
 
   useEffect(() => {
+    if (window === undefined) return;
     const handleResize = () => {
       setWindowWidth(window.innerWidth)
     };
