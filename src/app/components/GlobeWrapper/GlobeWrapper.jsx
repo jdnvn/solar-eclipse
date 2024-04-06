@@ -27,15 +27,15 @@ export default function GlobeWrapper() {
 
 
   useEffect(() => {
-    if (typeof window === undefined) return;
+    if (typeof window !== undefined) {
+      const handleResize = () => {
+        setWindowWidth(window.innerWidth)
+      };
 
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth)
-    };
+      window.addEventListener('resize', handleResize);
 
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
   }, []);
 
   const fetchEclipseData = async (latitude, longitude) => {
