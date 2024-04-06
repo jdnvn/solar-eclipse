@@ -118,3 +118,17 @@ export const FunFactContainer = styled.div`
   margin-top: 10px;
   padding: 1em;
 `;
+
+export const DataPointContainer = styled.div`
+  margin-bottom: 10px;
+`;
+
+export const DataPointTitle = styled.p`
+  color: #bababa;
+`;
+
+export const DataPoint = styled.p`
+  font-size: 30px;
+  color: white;
+`;
+

@@ -7,7 +7,7 @@ import Times from '../Times';
 import Citations from '../Citations/Citations';
 import EclipseLoader from '../EclipseLoader/EclipseLoader';
 import SidePanel from '../SidePanel/SidePanel';
-import { BackToCurrentLocationButton, ClickMapTip, GetDirectionsButton, HeaderBar, SelectedLocation, FunFactContainer, SearchBar, SearchBarContainer, SearchIcon, ClearButton } from './styles';
+import { BackToCurrentLocationButton, ClickMapTip, GetDirectionsButton, HeaderBar, SelectedLocation, FunFactContainer, SearchBar, SearchBarContainer, SearchIcon, ClearButton, DataPointContainer, DataPointTitle, DataPoint } from './styles';
 import Drawer from '../Drawer/Drawer';
 import { IoMdLocate } from "react-icons/io";
 import { FaDirections } from "react-icons/fa";
@@ -16,6 +16,7 @@ export default function GlobeWrapper({ randomFacts }) {
   const [currentCoords, setCurrentCoords] = useState(null);
   const [locationPermissionDenied, setLocationPermissionDenied] = useState(false);
   const [selectedLocationData, setSelectedLocationData] = useState(null);
+  const [selectedWeatherData, setSelectedWeatherData] = useState(null);
   const [selectedCoords, setSelectedCoords] = useState(null);
   const [selectedEclipseData, setSelectedEclipseData] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(true);
@@ -41,6 +42,7 @@ export default function GlobeWrapper({ randomFacts }) {
       const response = await fetch(`/api/eclipse_data?latitude=${latitude}&longitude=${longitude}`);
       const data = await response.json();
       setSelectedEclipseData(data);
+      console.log(data);
     } catch (error) {
       console.error(error)
     }
@@ -59,9 +61,22 @@ export default function GlobeWrapper({ randomFacts }) {
     setLoading(false);
   };
 
+  const fetchWeatherData = async (latitude, longitude) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/weather?latitude=${latitude}&longitude=${longitude}`);
+      const data = await response.json();
+      setSelectedWeatherData(data.data[0]);
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
+  };
+
   const fetchData = (latitude, longitude) => {
     fetchLocationData(latitude, longitude);
     fetchEclipseData(latitude, longitude);
+    fetchWeatherData(latitude, longitude);
   };
 
   useEffect(()  => {
@@ -125,6 +140,12 @@ export default function GlobeWrapper({ randomFacts }) {
                 {selectedEclipseData.properties?.obscuration === "100.0%" && "Totally Obscured! 🤘"}
               </p>
               {selectedEclipseData.properties && <SunObscuration data={selectedEclipseData.properties} />}
+              {selectedWeatherData && (
+                <DataPointContainer>
+                  <DataPointTitle>Clouds</DataPointTitle>
+                  <DataPoint>{selectedWeatherData.clouds}%</DataPoint>
+                </DataPointContainer>
+              )}
               {selectedEclipseData.properties && <Times data={selectedEclipseData.properties} />}
               <p style={{ color: "#bababa", marginTop: "20px" }}>
                 Eclipse Facts
