@@ -99,7 +99,7 @@ export default function GlobeWrapper({ randomFacts }) {
   };
 
   const formatAddress = (address) => {
-    if (!address) return 'this location';
+    if (!address) return 'Unknown Location';
     const parts = ['city', 'state', 'country'];
     return parts.map(part => address[part]).filter(Boolean).join(', ');
   };
@@ -132,11 +132,12 @@ export default function GlobeWrapper({ randomFacts }) {
               {randomFacts.map((fact, index) => {
                 return <FunFactContainer key={index}><p style={{ textAlign: "left", fontSize: "12px" }}>{fact}</p></FunFactContainer>;
               })}
+              <p style={{ color: "#3b3b3b", opacity: "40%", marginTop: "10px" }}>____</p>
               <Citations />
             </>
           ) : (
             <>
-              {locationPermissionDenied ? <p style={{ margin: 0, textAlign: 'center' }}>Select a point on the map to see eclipse data!</p> : <EclipseLoader />}
+                {locationPermissionDenied || selectedCoords ? <><p>No data available</p><p style={{ fontSize: "12px" }}>Tip: Select a location on the path of totality.</p></> : <EclipseLoader />}
             </>
           )}
         </>
