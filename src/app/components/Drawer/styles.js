@@ -6,7 +6,7 @@ export const DrawerContainer = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  height: 90%;
+  height: 87%;
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
   border-top-left-radius: 16px;

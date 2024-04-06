@@ -147,10 +147,9 @@ export default function GlobeWrapper({ randomFacts }) {
 
   return (
     <div style={{ position: 'relative' }}>
-      <TitleInfo>Total Solar Eclipse<br/>April 8, 2024</TitleInfo>
       <HeaderBar>
         {selectedLocationData && <SelectedLocation>{formatAddress(selectedLocationData.address)}</SelectedLocation>}
-        {!hasClickedMap && <ClickMapTip>Click the map to get eclipse data!</ClickMapTip>}
+        {!hasClickedMap && !loading && <ClickMapTip>Click the map to get eclipse data!</ClickMapTip>}
       </HeaderBar>
       <div style={{ width: '100vw', height: '100vh' }}>
         <GlobeComponent currentCoords={currentCoords} selectedCoords={selectedCoords} onClick={onGlobeClick} />
