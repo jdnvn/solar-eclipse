@@ -1,6 +1,6 @@
 import re
 import numpy as np
-
+import pandas as pd
 
 def penumbra_coords(pct, lat, lon, azm, path_width):
     offset_dist = pct * (path_width // 2)
@@ -47,3 +47,6 @@ if __name__ == "__main__":
     northern_limit_path = coords_array[:, 0, :]
     azm = [float(row[-3].split()[-1]) for row in table]
     path_widths = [float(row[-2]) for row in table]
+
+    path_df = pd.DataFrame(table)
+    times = path_df[0].values

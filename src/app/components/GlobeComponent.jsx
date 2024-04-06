@@ -1,8 +1,9 @@
 'use client'
 
 import { useEffect, useRef } from 'react';
-import { NORTHERN_LIMIT_COORDS, SOUTHERN_LIMIT_COORDS, CENTRAL_LINE_COORDS } from '../constants';
+import { NORTHERN_LIMIT_COORDS, SOUTHERN_LIMIT_COORDS, CENTRAL_LINE_COORDS, TIMES } from '../constants';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
+import Times from './Times';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
@@ -56,17 +57,31 @@ export default function GlobeComponent({ currentCoords, onClick, selectedCoords 
         'circle-radius': 8,
       }
     });
-    let counter = 0;
-    setInterval(() => {
-      map.current.getSource('moon').setData({
-        'type': 'Feature',
-        'geometry': {
-          'type': 'Point',
-          'coordinates': CENTRAL_LINE_COORDS[counter]
+
+    // real time moon tracker babay
+    let currentTime = new Date();
+    let startTime = new Date(`2024-04-08T${TIMES[0]}Z`);
+    let endTime = new Date(`2024-04-08T${TIMES[TIMES.length - 1]}Z`);
+
+    if (currentTime >= startTime && currentTime <= endTime) {
+      const timeDiffs = TIMES.map((time) => Math.abs(currentTime - new Date(`2024-04-08T${time}Z`)));
+      let currentIndex = timeDiffs.indexOf(Math.min(...timeDiffs));
+      let counter = currentIndex;
+      setInterval(() => {
+        if (counter < TIMES.length) {
+          map.current.getSource('moon').setData({
+            'type': 'Feature',
+            'geometry': {
+              'type': 'Point',
+              'coordinates': CENTRAL_LINE_COORDS[counter]
+            }
+          });
+
+          if (counter + 1 < TIMES.length && new Date() >= new Date(`2024-04-08T${TIMES[counter + 1]}`))
+            counter = counter + 1
         }
-      });
-      counter = (counter + 1) % CENTRAL_LINE_COORDS.length;
-    }, 1000);
+      }, 1000);
+    }
   };
 
   const onGlobeClick = (e) => {
