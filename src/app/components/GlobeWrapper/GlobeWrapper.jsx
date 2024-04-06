@@ -23,8 +23,7 @@ export default function GlobeWrapper() {
   const [drawerOpen, setDrawerOpen] = useState(true);
   const [hasClickedMap, setHasClickedMap] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
+  const [windowWidth, setWindowWidth] = useState(window?.innerWidth);
 
   useEffect(() => {
     if (typeof window !== undefined) {
