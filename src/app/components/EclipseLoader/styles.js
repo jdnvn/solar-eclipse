@@ -29,6 +29,7 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50vh;
+  flex-direction: column;
+  height: 70vh;
   overflow: hidden;
 `;

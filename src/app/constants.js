@@ -294,3 +294,18 @@ export const CENTRAL_LINE_COORDS = [
   [ -43.21833333,   49.11      ],
   [ -37.26166667,   49.065     ]
 ];
+
+export const AI_FACTS = [
+  "Total solar eclipses are one of nature's most awe-inspiring sights. During a total eclipse, the moon completely covers the sun, allowing the sun's outer atmosphere (corona) to be visible.",
+  "The shadow created by the Moon during a total solar eclipse moves at an incredibly fast speed, often exceeding 1,000 miles per hour (1,600 kilometers per hour) as it travels across the Earth's surface.",
+  "Totality, when the moon fully covers the sun, usually lasts only a few brief minutes, from as little as a few seconds up to about 7 minutes and 32 seconds, the longest possible duration.",
+  "During totality, the sun's corona appears as a crown of wispy rays extending millions of miles into space. The corona can only be seen from Earth during a total solar eclipse.",
+  "Temperature drops of up to 20°F(11°C) can be detected during the period of totality due to the moon's blocking of solar radiation.",
+  "Some animals exhibit unusual behavior during a total solar eclipse. Birds may stop singing, cows may return to the barn, and nocturnal animals may become active, mistaking the darkness for nighttime.",
+  "The longest period of total solar eclipse that will occur in the 21st century is 7 minutes and 1 second on July 16, 2186.",
+  "The same location typically experiences a total solar eclipse only once every 375 years.",
+  "The path of totality is the narrow strip of land where the total eclipse can be observed in its entirety. Outside this path, observers see a partial eclipse. The width of the path of totality is usually only about 100 miles (160 kilometers) wide.",
+  "Just before and after totality, small beads of sunlight can be seen shining through the valleys and mountains along the edge of the Moon. This effect is known as Bailey's Beads. The last bead before totality creates the illusion of a sparkling diamond ring, hence the name \"Diamond Ring Effect.\"",
+  "It's crucial to observe a solar eclipse safely to prevent eye damage. Looking directly at the Sun, even during a partial eclipse, can cause permanent eye damage or blindness. Special eclipse glasses or indirect viewing methods, such as a pinhole projector, are recommended for safe viewing.",
+  "Total solar eclipses have inspired myths, legends, and folklore in cultures around the world. In Chinese mythology, it was believed that solar eclipses occurred when a celestial dragon devoured the Sun. According to the legend, people would make loud noises, such as beating drums or pots, and shoot arrows into the sky to scare away the dragon and prevent it from completely swallowing the Sun.",
+];

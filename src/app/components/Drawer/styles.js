@@ -40,10 +40,10 @@ export const DrawerButton = styled.button`
   justify-content: center;
   background-color: transparent;
   border: none;
-  cursor: pointer;
   padding: 8px;
   transition: transform 0.3s ease-out;
   transform: ${({ isOpen }) => (isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
+  color: white;
 `;
 
 export const ChevronIcon = styled(({ isOpen, ...props }) => (isOpen ? FaChevronUp : FaChevronDown))`

@@ -7,14 +7,15 @@ import Times from '../Times';
 import Citations from '../Citations/Citations';
 import EclipseLoader from '../EclipseLoader/EclipseLoader';
 import SidePanel from '../SidePanel/SidePanel';
-import { BackToCurrentLocationButton, ClickMapTip, GetDirectionsButton, HeaderBar, SelectedLocation, ShowInfoPanelButton } from './styles';
+import { TitleInfo, BackToCurrentLocationButton, ClickMapTip, GetDirectionsButton, HeaderBar, SelectedLocation, FunFactContainer } from './styles';
 import Drawer from '../Drawer/Drawer';
 import { IoMdLocate } from "react-icons/io";
 import { FaDirections } from "react-icons/fa";
+import { AI_FACTS } from '../../constants';
 
 const ECLIPSE_DATA_PATH = '/api/eclipse_data';
 
-export default function GlobeWrapper() {
+export default function GlobeWrapper({ randomFacts }) {
   const [currentCoords, setCurrentCoords] = useState(null);
   const [locationPermissionDenied, setLocationPermissionDenied] = useState(false);
   const [selectedLocationData, setSelectedLocationData] = useState(null);
@@ -110,17 +111,27 @@ export default function GlobeWrapper() {
 
   const dataContent = () => (
     <>
-      <h2 style={{ textAlign: 'center' }}>Total Solar Eclipse</h2>
-      <h4 style={{ margin: '5px 0 1em 0', textAlign: 'center' }}>April 8, 2024</h4>
       {loading ? <EclipseLoader /> : (
         <>
-          {selectedLocationData && selectedEclipseData ? (
+          {selectedEclipseData?.properties ? (
             <>
-              <p style={{ margin: '0 0 1em 0', textAlign: 'center' }}>
-                Obscurity: <b>{selectedEclipseData.properties?.obscuration}</b>
+              <p style={{ color: "#bababa" }}>
+                Obscuration
+              </p>
+              <p style={{ fontSize: "30px" }}>
+                {selectedEclipseData.properties?.obscuration === "100.0%" ? "100%" : selectedEclipseData.properties?.obscuration}
+              </p>
+              <p style={{ fontSize: "12px" }}>
+                {selectedEclipseData.properties?.obscuration === "100.0%" && "Totally Obscured! 🤘"}
               </p>
               {selectedEclipseData.properties && <SunObscuration data={selectedEclipseData.properties} />}
               {selectedEclipseData.properties && <Times data={selectedEclipseData.properties} />}
+              <p style={{ color: "#bababa", marginTop: "20px" }}>
+                Eclipse Facts
+              </p>
+              {randomFacts.map((fact, index) => {
+                return <FunFactContainer key={index}><p style={{ textAlign: "left", fontSize: "12px" }}>{fact}</p></FunFactContainer>;
+              })}
               <Citations />
             </>
           ) : (
@@ -135,9 +146,10 @@ export default function GlobeWrapper() {
 
   return (
     <div style={{ position: 'relative' }}>
+      <TitleInfo>Total Solar Eclipse<br/>April 8, 2024</TitleInfo>
       <HeaderBar>
         {selectedLocationData && <SelectedLocation>{formatAddress(selectedLocationData.address)}</SelectedLocation>}
-        {!hasClickedMap && !loading && <ClickMapTip>Click the map to get eclipse data!</ClickMapTip>}
+        {!hasClickedMap && <ClickMapTip>Click the map to get eclipse data!</ClickMapTip>}
       </HeaderBar>
       <div style={{ width: '100vw', height: '100vh' }}>
         <GlobeComponent currentCoords={currentCoords} selectedCoords={selectedCoords} onClick={onGlobeClick} />
@@ -153,12 +165,12 @@ export default function GlobeWrapper() {
       )}
 
       {selectedLocationData && selectedCoords && currentCoords && (
-        <GetDirectionsButton onClick={getDirections}>
+        <GetDirectionsButton onClick={getDirections} title="get directions">
           <FaDirections />
         </GetDirectionsButton>
       )}
       {selectedCoords && currentCoords && (
-        <BackToCurrentLocationButton onClick={selectCurrentLocation}>
+        <BackToCurrentLocationButton onClick={selectCurrentLocation} title="jump to current location">
           <IoMdLocate />
         </BackToCurrentLocationButton>
       )}
