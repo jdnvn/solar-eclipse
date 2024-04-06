@@ -10,4 +10,5 @@ export const TimeTitle = styled.p`
 
 export const TimeData= styled.p`
   font-size: 30px;
+  color: white;
 `;

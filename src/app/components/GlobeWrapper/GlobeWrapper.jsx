@@ -118,10 +118,10 @@ export default function GlobeWrapper({ randomFacts }) {
               <p style={{ color: "#bababa" }}>
                 Obscuration
               </p>
-              <p style={{ fontSize: "30px" }}>
+              <p style={{ fontSize: "30px", color: "white" }}>
                 {selectedEclipseData.properties?.obscuration === "100.0%" ? "100%" : selectedEclipseData.properties?.obscuration}
               </p>
-              <p style={{ fontSize: "12px" }}>
+              <p style={{ fontSize: "12px", color: "white" }}>
                 {selectedEclipseData.properties?.obscuration === "100.0%" && "Totally Obscured! 🤘"}
               </p>
               {selectedEclipseData.properties && <SunObscuration data={selectedEclipseData.properties} />}

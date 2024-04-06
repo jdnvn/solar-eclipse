@@ -42,6 +42,7 @@ export const SelectedLocation = styled.div`
   border-radius: 10px;
   backdrop-filter: blur(5px);
   padding: 10px;
+  color: white;
 `;
 
 export const GetDirectionsButton = styled(BackToCurrentLocationButton)`
@@ -56,6 +57,7 @@ export const ClickMapTip = styled.div`
   font-size: 15px;
   text-shadow: 2px 1px 2px rgb(0 0 0 / 100%);
   text-align: center;
+  color: white;
 `;
 
 export const FunFactContainer = styled.div`
