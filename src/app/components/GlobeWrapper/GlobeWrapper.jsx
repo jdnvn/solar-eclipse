@@ -178,11 +178,17 @@ export default function GlobeWrapper({ randomFacts }) {
       <HeaderBar>
         <SearchBarContainer>
           <SearchIcon />
-          <SearchBar type="text" placeholder={selectedLocationData ? formatAddress(selectedLocationData.address) : "Address or Zip Code"} value={searchValue} onChange={handleInputChange} onKeyDown={handleKeyDown} />
+          <SearchBar
+            type="text"
+            placeholder={selectedLocationData ? formatAddress(selectedLocationData.address) : "Address or Zip Code"}
+            value={searchValue}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            disabled={loading}
+          />
           {searchValue && <ClearButton onClick={clearSearch} />}
         </SearchBarContainer>
-        {/* {selectedLocationData && <SelectedLocation>{formatAddress(selectedLocationData.address)}</SelectedLocation>} */}
-        {!hasClickedMap && !loading && <ClickMapTip>Click the map to get eclipse data!</ClickMapTip>}
+        {!hasClickedMap && !loading && <ClickMapTip>or click the map to get eclipse data!</ClickMapTip>}
       </HeaderBar>
       <div style={{ width: '100vw', height: '100vh' }}>
         <GlobeComponent currentCoords={currentCoords} selectedCoords={selectedCoords} onClick={onGlobeClick} />
