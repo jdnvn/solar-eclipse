@@ -84,32 +84,32 @@ export default function GlobeComponent({ currentCoords, onClick, selectedCoords 
     }
   };
 
-  const onGlobeClick = (e) => {
+  const addSelectedPoint = (latitude, longitude) => {
     map.current.flyTo({
-      center: [e.lngLat.lng, e.lngLat.lat],
+      center: [longitude, latitude],
       speed: 0.5
     });
 
-    if (map.current.getSource('current_point')) {
-      map.current.removeLayer('current_point');
-      map.current.removeSource('current_point');
+    if (map.current.getSource('selected_point')) {
+      map.current.removeLayer('selected_point');
+      map.current.removeSource('selected_point');
     }
 
-    map.current.addSource('current_point', {
+    map.current.addSource('selected_point', {
       'type': 'geojson',
       'data': {
         'type': 'Feature',
         'geometry': {
           'type': 'Point',
-          'coordinates': [e.lngLat.lng, e.lngLat.lat]
+          'coordinates': [longitude, latitude]
         },
       }
     });
 
     map.current.addLayer({
-      'id': 'current_point',
+      'id': 'selected_point',
       'type': 'circle',
-      'source': 'current_point',
+      'source': 'selected_point',
       'paint': {
         'circle-color': '#4264fb',
         'circle-radius': 5,
@@ -117,6 +117,10 @@ export default function GlobeComponent({ currentCoords, onClick, selectedCoords 
         'circle-stroke-color': '#ffffff'
       }
     });
+  };
+
+  const onGlobeClick = (e) => {
+    addSelectedPoint(e.lngLat.lat, e.lngLat.lng);
     onClick(e);
   };
 
@@ -234,15 +238,19 @@ export default function GlobeComponent({ currentCoords, onClick, selectedCoords 
   }, [currentCoords]);
 
   useEffect(() => {
-    if (selectedCoords === null && map?.current?.getSource('current_point')) {
-      map.current.removeLayer('current_point');
-      map.current.removeSource('current_point');
-      if (currentCoords) {
-        map.current.flyTo({
-          center: [currentCoords.longitude, currentCoords.latitude],
-          speed: 0.5
-        });
+    if (selectedCoords === null) {
+      if (map?.current?.getSource('selected_point')) {
+        map.current.removeLayer('selected_point');
+        map.current.removeSource('selected_point');
+        if (currentCoords) {
+          map.current.flyTo({
+            center: [currentCoords.longitude, currentCoords.latitude],
+            speed: 0.5
+          });
+        }
       }
+    } else {
+      addSelectedPoint(selectedCoords.latitude, selectedCoords.longitude);
     }
   }, [selectedCoords]);
 

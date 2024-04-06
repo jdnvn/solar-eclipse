@@ -7,12 +7,10 @@ import Times from '../Times';
 import Citations from '../Citations/Citations';
 import EclipseLoader from '../EclipseLoader/EclipseLoader';
 import SidePanel from '../SidePanel/SidePanel';
-import { BackToCurrentLocationButton, ClickMapTip, GetDirectionsButton, HeaderBar, SelectedLocation, FunFactContainer } from './styles';
+import { BackToCurrentLocationButton, ClickMapTip, GetDirectionsButton, HeaderBar, SelectedLocation, FunFactContainer, SearchBar, SearchBarContainer, SearchIcon, ClearButton } from './styles';
 import Drawer from '../Drawer/Drawer';
 import { IoMdLocate } from "react-icons/io";
 import { FaDirections } from "react-icons/fa";
-
-const ECLIPSE_DATA_PATH = '/api/eclipse_data';
 
 export default function GlobeWrapper({ randomFacts }) {
   const [currentCoords, setCurrentCoords] = useState(null);
@@ -24,6 +22,7 @@ export default function GlobeWrapper({ randomFacts }) {
   const [hasClickedMap, setHasClickedMap] = useState(false);
   const [loading, setLoading] = useState(false);
   const [windowWidth, setWindowWidth] = useState(null);
+  const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
     setWindowWidth(window.innerWidth);
@@ -37,16 +36,19 @@ export default function GlobeWrapper({ randomFacts }) {
   }, []);
 
   const fetchEclipseData = async (latitude, longitude) => {
+    setLoading(true);
     try {
-      const response = await fetch(`${ECLIPSE_DATA_PATH}?latitude=${latitude}&longitude=${longitude}`);
+      const response = await fetch(`/api/eclipse_data?latitude=${latitude}&longitude=${longitude}`);
       const data = await response.json();
       setSelectedEclipseData(data);
     } catch (error) {
       console.error(error)
     }
+    setLoading(false);
   };
 
   const fetchLocationData = async (latitude, longitude) => {
+    setLoading(true);
     try {
       const response = await fetch(`/api/location?latitude=${latitude}&longitude=${longitude}`);
       const data = await response.json();
@@ -54,13 +56,12 @@ export default function GlobeWrapper({ randomFacts }) {
     } catch (error) {
       console.error(error);
     }
+    setLoading(false);
   };
 
   const fetchData = (latitude, longitude) => {
-    setLoading(true);
     fetchLocationData(latitude, longitude);
     fetchEclipseData(latitude, longitude);
-    setLoading(false);
   };
 
   useEffect(()  => {
@@ -144,10 +145,43 @@ export default function GlobeWrapper({ randomFacts }) {
     </>
   );
 
+  const handleInputChange = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const clearSearch = () => {
+    setSearchValue('');
+  };
+
+  const fetchCoordinatesFromAddress = async () => {
+    if (searchValue === '') return;
+    try {
+      const response = await fetch(`/api/geocoder?address=${searchValue}`);
+      const data = await response.json();
+      const coords = data.features[0].center;
+      setSelectedCoords({ latitude: coords[1], longitude: coords[0] });
+      fetchData(coords[1], coords[0]);
+    } catch (error) {
+      console.error(error);
+    }
+    clearSearch();
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      fetchCoordinatesFromAddress();
+    }
+  };
+
   return (
     <div style={{ position: 'relative' }}>
       <HeaderBar>
-        {selectedLocationData && <SelectedLocation>{formatAddress(selectedLocationData.address)}</SelectedLocation>}
+        <SearchBarContainer>
+          <SearchIcon />
+          <SearchBar type="text" placeholder={selectedLocationData ? formatAddress(selectedLocationData.address) : "Address or Zip Code"} value={searchValue} onChange={handleInputChange} onKeyDown={handleKeyDown} />
+          {searchValue && <ClearButton onClick={clearSearch} />}
+        </SearchBarContainer>
+        {/* {selectedLocationData && <SelectedLocation>{formatAddress(selectedLocationData.address)}</SelectedLocation>} */}
         {!hasClickedMap && !loading && <ClickMapTip>Click the map to get eclipse data!</ClickMapTip>}
       </HeaderBar>
       <div style={{ width: '100vw', height: '100vh' }}>
