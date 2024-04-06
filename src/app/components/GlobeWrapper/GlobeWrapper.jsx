@@ -23,18 +23,17 @@ export default function GlobeWrapper() {
   const [drawerOpen, setDrawerOpen] = useState(true);
   const [hasClickedMap, setHasClickedMap] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(window?.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(null);
 
   useEffect(() => {
-    if (typeof window !== undefined) {
-      const handleResize = () => {
-        setWindowWidth(window.innerWidth)
-      };
+    setWindowWidth(window.innerWidth);
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
 
-      window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize);
 
-      return () => window.removeEventListener('resize', handleResize);
-    }
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const fetchEclipseData = async (latitude, longitude) => {
@@ -143,7 +142,7 @@ export default function GlobeWrapper() {
       <div style={{ width: '100vw', height: '100vh' }}>
         <GlobeComponent currentCoords={currentCoords} selectedCoords={selectedCoords} onClick={onGlobeClick} />
       </div>
-      {windowWidth > 1000 ? (
+      {widowWidth && windowWidth > 1000 ? (
         <SidePanel>
           {dataContent()}
         </SidePanel>
