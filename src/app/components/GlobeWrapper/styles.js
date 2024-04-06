@@ -40,7 +40,7 @@ export const HeaderBar = styled.div`
 
 export const SearchBarContainer = styled.div`
   position: relative;
-  width: 300px;
+  width: 30%;
   border: none;
   border-radius: 20px;
   background-color: rgba(0, 0, 0, 0.5);
@@ -51,7 +51,7 @@ export const SearchBar = styled.input`
   margin-left: 10px;
   width: 100%;
   color: #fff;
-  font-size: 12px;
+  font-size: 16px;
   outline: none;
   background-color: transparent;
   border: none;
